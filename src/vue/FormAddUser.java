@@ -57,7 +57,7 @@ public class FormAddUser extends JDialog {
             }
         });
     }
-
+    //Ajouter un compte
     public void addUser() {
         //récupérer les 5 inputs
         String nom = tfNom.getText();
@@ -65,10 +65,26 @@ public class FormAddUser extends JDialog {
         String email = tfEmail.getText();
         String password = String.valueOf(pfPassword.getPassword());
         String confirm = String.valueOf(pfConfirm.getPassword());
-        JOptionPane.showConfirmDialog(
-                this,
-                UserController.insertUser(nom, prenom, email, password, confirm),
-                "Erreur :",
-                JOptionPane.ERROR_MESSAGE ) ;
+        //Récupére le message de l'ajout
+        popup(UserController.insertUser(nom, prenom, email, password, confirm));
+    }
+    //Méthode qui affiche le popup
+    public void popup(String message) {
+        //Découpe le message
+        String firstChar = message.substring(0, 1);
+        //titre et le type du Jdialog
+        String titre = "";
+        int type = 0;
+        //Test si le message commence par E
+        if(firstChar.equals("E")) {
+            titre = "Erreur";
+        }
+        //sinon commence par autre chose
+        else {
+            titre = "Valide";
+            type = 1;
+        }
+        //Afficher le message
+        JOptionPane.showMessageDialog(this, message , titre, type);
     }
 }
