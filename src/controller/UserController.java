@@ -28,8 +28,15 @@ public class UserController {
         if (!password.equals(confirm)) {
             return "les mots de passe ne sont pas identique";
         }
-        //Ajout du compte en BDD
+        //Création d'un objet User
         User user = new User(nom, prenom, email, password);
+        //Test si le compte existe en BDD
+        if(user.findUserExist()) {
+            return "Le compte existe déja en BDD";
+        }
+        //Hash du mot de passe
+        user.hashPassword();
+        //Ajout du compte en BDD
         user.add();
         return "Valide : Le compte à été ajouté";
     }
