@@ -1,5 +1,8 @@
 package vue;
 
+import model.User;
+import validator.*;
+import config.Regex;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -38,17 +41,53 @@ public class FormAddUser extends JDialog{
         btAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("J'ai cliqué sur le bouton");
-                recupUser();
+               addUser();
             }
         });
     }
 
-    public void recupUser(){
-        System.out.println(tfNom.getText());
-        System.out.println(tfPrenom.getText());
-        System.out.println(tfEmail.getText());
-        System.out.println(pfPassword.getPassword());
-        System.out.println(pfConfirm.getPassword());
+    public void addUser(){
+        //récupérer les 5 inputs
+        String nom = tfNom.getText();
+        String prenom = tfPrenom.getText();
+        String email = tfEmail.getText();
+        String password = String.valueOf(pfPassword.getPassword());
+        String confirm = String.valueOf(pfConfirm.getPassword());
+        //Tester si les 5 inputs sont différents de vide
+        if(!nom.isEmpty() && !prenom.isEmpty() && !email.isEmpty() && !password.isEmpty() && !confirm.isEmpty()){
+            //Test si les champs sont plus petit que 50
+            if(Validation.isLengthMax(nom,50) && Validation.isLengthMax(prenom,50)
+                    && Validation.isLengthMax(email,50)) {
+                //Tester si le mail est valide
+                if(Validation.isValid(email, Regex.EMAIL_REGEX)) {
+                    //Tester si le mot de passe est conforme (regex)
+                    if(Validation.isValid(password, Regex.PASSWORD_REGEX)) {
+                        //Test si les 2 mots de passe correspondent
+                        if(password.equals(confirm)) {
+                            User newUser = new User(nom, prenom, email, password);
+                            System.out.println(newUser);
+                        }
+                        //Sinon les mots de passe sont différents
+                        else{
+                            System.out.println("Erreur les mots de passe ne correspondent pas");
+                        }
+                    }
+                    //Sinon les mot de passe ne sont pas conforme (regex)
+                    else {
+                        System.out.println("Le mot de passe ne correspondent pas à la demande");
+                    }
+                }
+                //Sinon le mail est incorrect
+                else {
+                    System.out.println("Le mail est invalide");
+                }
+            }
+            else{
+                System.out.println("Erreur : les valeurs de non, prénom et email sont trop grand");
+            }
+        }
+        else{
+            System.out.println("Veuillez remplir tous les champs du formulaire");
+        }
     }
 }

@@ -1,4 +1,4 @@
-package util;
+package config;
 
 public final class Env {
     //Constantes Informations BDD MySQL
