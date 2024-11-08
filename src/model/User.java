@@ -2,7 +2,6 @@ package model;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import util.Bdd;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -174,6 +173,7 @@ public class User extends AbstractModel{
     }
 
     //méthode qui retourne une collection d'objet
+    @org.jetbrains.annotations.NotNull
     public static ArrayList<Object> findAll(){
         //instance d'une ArrayList
         ArrayList<Object> users = new ArrayList<>();

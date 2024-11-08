@@ -1,6 +1,7 @@
 package vue;
 
 import config.Regex;
+import controller.UserController;
 import model.User;
 import validator.Validation;
 
@@ -64,73 +65,10 @@ public class FormAddUser extends JDialog {
         String email = tfEmail.getText();
         String password = String.valueOf(pfPassword.getPassword());
         String confirm = String.valueOf(pfConfirm.getPassword());
-        //Tester si les 5 inputs sont différents de vide
-        if (!nom.isEmpty() && !prenom.isEmpty() && !email.isEmpty() && !password.isEmpty() && !confirm.isEmpty()) {
-            //Test si les champs sont plus petit que 50
-            if (Validation.isLengthMax(nom, 50) && Validation.isLengthMax(prenom, 50)
-                    && Validation.isLengthMax(email, 50)) {
-                //Tester si le mail est valide
-                if (Validation.isValid(email, Regex.EMAIL_REGEX)) {
-                    //Tester si le mot de passe est conforme (regex)
-                    if (Validation.isValid(password, Regex.PASSWORD_REGEX)) {
-                        //Test si les 2 mots de passe correspondent
-                        if (password.equals(confirm)) {
-                            User newUser = new User(nom, prenom, email, password);
-                            JOptionPane.showMessageDialog(
-                                    this,
-                                    "Le compte a été ajouté",
-                                    "Valid",
-                                    JOptionPane.OK_OPTION
-                            );
-                        }
-                        //Sinon les mots de passe sont différents
-                        else {
-                            JOptionPane.showMessageDialog(
-                                    this,
-                                    "Erreur les mots de passe ne correspondent pas",
-                                    "Erreur",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-                        }
-                    }
-                    //Sinon les mot de passe ne sont pas conforme (regex)
-                    else {
-                        JOptionPane.showMessageDialog(
-                                this,
-                                "Le mot de passe est invalide",
-                                "Erreur",
-                                JOptionPane.ERROR_MESSAGE
-                        );
-                    }
-                }
-                //Sinon le mail est incorrect
-                else {
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "Le mail est invalide",
-                            "Erreur",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                }
-            }
-            //Sinon nom, prénom et email sont trop grands
-            else {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Les valeurs de non, prénom et email sont trop grands",
-                        "Erreur",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
-        }
-        //Sinon les champs ne sont pas remplis
-        else {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Veuillez remplir tous les champs du formulaire",
-                    "Erreur",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
+        JOptionPane.showConfirmDialog(
+                this,
+                UserController.insertUser(nom, prenom, email, password, confirm),
+                "Erreur :",
+                JOptionPane.ERROR_MESSAGE ) ;
     }
 }
